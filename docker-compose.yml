@@ -69,3 +69,31 @@ services:
       - "1080:1080"
       - "1025:1025"
     restart: unless-stopped
+  
+  starrocks-db-server:
+    container_name: starrocks-db-server
+    build:
+      context: ./ingest_database/starrocks
+      dockerfile: Dockerfile
+    ports:
+      - "9030:9030"
+      - "8030:8030"
+      - "8040:8040"
+    restart: on-failure:3
+    dns:
+      - 8.8.8.8
+      - 4.4.4.4
+
+  starrocks-db-migrations:
+    container_name: starrocks-db-migrations
+    build:
+      context: ./ingest_database/migration
+      dockerfile: Dockerfile
+    depends_on:
+      - starrocks-db-server
+    environment:
+      - DBHOST=starrocks-db-server
+      - DBPORT=9030
+    dns:
+      - 8.8.8.8
+      - 4.4.4.4

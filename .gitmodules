@@ -1,0 +1,3 @@
+[submodule "ingest_database"]
+	path = ingest_database
+	url = git@github.com:BrandonFreeman-Cavallo/ingest_database.git
